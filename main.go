@@ -4,9 +4,12 @@ import (
 	"context"
 	"strconv"
 
+	"os"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 )
 
 var ctx = context.Background()
@@ -22,11 +25,10 @@ func toNumberFromString(start string) int {
 func main() {
     app := fiber.New()
     app.Use(cors.New())
-
-	
+    godotenv.Load()
 	rdb := redis.NewClient(&redis.Options{
-        Addr: "redis-11387.c289.us-west-1-2.ec2.cloud.redislabs.com:11387",
-        Password: "SeMAUKONqjtqrO73wCK49O9DY6mGAsRG", // no password set
+        Addr: os.Getenv("DB_URL"),
+        Password: os.Getenv("DB_PASSWORD"), // no password set
         DB:       0,  // use default DB
     })
 
